@@ -1,9 +1,9 @@
 import firebase from 'firebase'
 
 const config = {
-  apiKey: "AIzaSyAvE8yZMbjt6Y799fAHFOOJ-WhjdwGfK6A",
-  authDomain: "vuejs-shopping-cart.firebaseapp.com",
-  databaseURL: "https://vuejs-shopping-cart.firebaseio.com/"
+  apiKey: "AIzaSyCD9QQGmoa5buBNmd_CvMd5NMqyLvs-Tls",
+  authDomain: "bbbaden-m150.firebaseapp.com",
+  databaseURL: "https://bbbaden-m150.firebaseio.com"
 }
 
 firebase.initializeApp(config);
