@@ -4,7 +4,7 @@ const state = {
 
 const mutations = {
 	'SET_ADDRESS' (state, {address}) {
-		state.delivery_address = address;
+		state.delivery_address = address; //Setting the address to Vuex
 	}
 }
 

@@ -83,16 +83,22 @@ import {
 import CartItem from './cart/CartItem.vue';
 export default {
   computed: {
-    ...mapGetters(['cartItemList', 'isLoggedIn', 'products', 'currentUser', 'cartValue', 'deliveryAddress'])
+    ...mapGetters(['cartItemList', 'isLoggedIn', 'products', 'currentUser', 'cartValue', 'deliveryAddress']),
   },
   components: {
     appCartItem: CartItem
   },
-  mounted(){
-    this.getDeliveryAddress();
+  watch: {
+    deliveryAddress(address){ //After address has been loaded from Firebase
+      this.setDeliveryAddress(address);
+    },
+    currentUser(){ //Waiting until we get information about the user
+      var uid = this.currentUser.uid;
+      this.getDeliveryAddressRemote({uid: uid}); //Getting the delivery address from the user if available
+    }
   },
   methods: {
-    ...mapActions(['saveShoppingCart', 'saveDeliveryAddressRemote', 'addMessage', 'saveToTransaction', 'clearCart']),
+    ...mapActions(['saveShoppingCart', 'saveDeliveryAddressRemote', 'getDeliveryAddressRemote', 'addMessage', 'saveToTransaction', 'clearCart']),
     checkValidCart(itemList, prodList) {
       let isValid = true;
       let message = "";
@@ -145,17 +151,14 @@ export default {
         });
       }
     },
-    getDeliveryAddress(){
-      /*this.deliveryAddress.then(function(result){
-        console.log(result);
-      })*/
-
-      /*this.$refs.delivery_form.first_name.value = thisdeliveryAddress.first_name;
-      this.$refs.delivery_form.last_name.value;
-      this.$refs.delivery_form.street.value;
-      this.$refs.delivery_form.number.value;
-      this.$refs.delivery_form.zip.value;
-      this.$refs.delivery_form.city.value;*/
+    setDeliveryAddress(address){
+      //Setting address into the form
+      this.$refs.delivery_form.first_name.value = address.first_name;
+      this.$refs.delivery_form.last_name.value = address.last_name;
+      this.$refs.delivery_form.street.value = address.street;
+      this.$refs.delivery_form.number.value = address.number;
+      this.$refs.delivery_form.zip.value = address.zip;
+      this.$refs.delivery_form.city.value = address.city;
     },
     saveDeliveryAddress(){
       event.preventDefault();
@@ -179,14 +182,20 @@ export default {
 
       console.log(address);
 
-      this.saveDeliveryAddressRemote({
+      if(this.saveDeliveryAddressRemote({
         uid: uid,
         address: address
-      });
-      this.addMessage({
-        messageClass: 'success',
-        message: "Your address has been saved."
-      })
+      })){ //If success
+        this.addMessage({
+          messageClass: 'success',
+          message: "Your address has been saved."
+        });
+      } else { //If failed
+        this.addMessage({
+          messageClass: 'danger',
+          message: "The address could not be saved."
+        });
+      }
     },
     checkout() {
       if (this.isLoggedIn) {

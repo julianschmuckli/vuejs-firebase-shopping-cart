@@ -61,10 +61,11 @@ export function saveDeliveryAddressRemote(_, {uid, address}){
   return ref.child("delivery_address/" + uid).set(address)
 }
 
-export function getDeliveryAddress({commit}, {uid}){
+export function getDeliveryAddressRemote({commit}, {uid}){
   return ref.child("delivery_address/" + uid).once('value').then((address) => {
+    console.log(address.val())
     if(address.val()){
-      commit('SET_ADDRESS', address.val());
+      commit('SET_ADDRESS', {address: address.val()}); //Sending the address to the Vuex store
     }
   });
 }
