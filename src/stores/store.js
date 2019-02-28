@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import address from './modules/address';
 import cart from './modules/cart';
 import products from './modules/products';
 import auth from './modules/auth';
@@ -16,6 +17,7 @@ export default new Vuex.Store({
 		auth,
 		cart,
 		products,
-		messages
+		messages,
+		address
 	}
 });

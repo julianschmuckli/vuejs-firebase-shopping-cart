@@ -8,12 +8,12 @@
           <div class="col-md-12">
             <router-view></router-view>
 
-            <div class="panel panel-warning" id="reset-store-panel">
+            <!--<div class="panel panel-warning" id="reset-store-panel">
               <div class="panel-heading">Admin Panel (Testing purpose)</div>
                 <div class="panel-body text-center">
                   <button class="btn btn-warning">Reset Store</button>
                 </div>
-            </div>
+            </div>-->
           </div>
         </div>
     </div>

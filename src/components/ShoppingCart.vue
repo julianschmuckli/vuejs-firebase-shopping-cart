@@ -16,25 +16,62 @@
     </transition-group>
 
     <tfoot>
-      <tr class="visible-xs">
-        <td class="text-center"><strong>Total {{ cartValue }}</strong></td>
-      </tr>
       <tr>
-        <td>
-          <button class="btn btn-warning" @click="saveShoppingCartLocal">
-							<i class="fa fa-angle-left"></i>Save and Continue Shopping
-						</button>
-        </td>
-        <td colspan="2" class="hidden-xs"></td>
+        <td colspan="3" class="hidden-xs"></td>
         <td class="hidden-xs text-center"><strong>Total ${{ cartValue }}</strong></td>
-        <td>
-          <button class="btn btn-success btn-block" @click="checkout">
-							Checkout <i class="fa fa-angle-right"></i>
-						</button>
-        </td>
+        <td></td>
       </tr>
     </tfoot>
   </table>
+  <div class="row">
+    <div class="col-sm-6">
+      <h4>Delivery address</h4>
+      <form ref="delivery_form" id="delivery_form" @submit="saveDeliveryAddress">
+        <div class="row">
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="first_name" placeholder="First name">
+          </div>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="last_name" placeholder="Last name">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-9">
+            <input type="text" class="form-control" name="street" placeholder="Street">
+          </div>
+          <div class="col-sm-3">
+            <input type="text" class="form-control" name="number" placeholder="Number">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">
+            <input type="text" class="form-control" name="zip" placeholder="Zip code">
+          </div>
+          <div class="col-sm-9">
+            <input type="text" class="form-control" name="city" placeholder="City">
+          </div>
+        </div>
+        <div style="text-align:right;width:100%;">
+          <input type="submit" class="btn btn-default" value="save">
+        </div>
+      </form>
+    </div>
+    <div class="col-sm-6">
+
+    </div>
+  </div>
+  <div class="row" id="end_buttons">
+    <div class="col-sm-6">
+      <button class="btn btn-warning" @click="saveShoppingCartLocal">
+        <i class="fa fa-angle-left"></i>Save and Continue Shopping
+      </button>
+    </div>
+    <div class="col-sm-6" id="checkout_button_wrapper">
+      <button class="btn btn-success btn-block" @click="checkout">
+        Checkout <i class="fa fa-angle-right"></i>
+      </button>
+    </div>
+  </div>
 </div>
 </template>
 
@@ -46,13 +83,16 @@ import {
 import CartItem from './cart/CartItem.vue';
 export default {
   computed: {
-    ...mapGetters(['cartItemList', 'isLoggedIn', 'products', 'currentUser', 'cartValue'])
+    ...mapGetters(['cartItemList', 'isLoggedIn', 'products', 'currentUser', 'cartValue', 'deliveryAddress'])
   },
   components: {
     appCartItem: CartItem
   },
+  mounted(){
+    this.getDeliveryAddress();
+  },
   methods: {
-    ...mapActions(['saveShoppingCart', 'addMessage', 'saveToTransaction', 'clearCart']),
+    ...mapActions(['saveShoppingCart', 'saveDeliveryAddressRemote', 'addMessage', 'saveToTransaction', 'clearCart']),
     checkValidCart(itemList, prodList) {
       let isValid = true;
       let message = "";
@@ -104,6 +144,49 @@ export default {
           message: 'Please login to save your cart'
         });
       }
+    },
+    getDeliveryAddress(){
+      /*this.deliveryAddress.then(function(result){
+        console.log(result);
+      })*/
+
+      /*this.$refs.delivery_form.first_name.value = thisdeliveryAddress.first_name;
+      this.$refs.delivery_form.last_name.value;
+      this.$refs.delivery_form.street.value;
+      this.$refs.delivery_form.number.value;
+      this.$refs.delivery_form.zip.value;
+      this.$refs.delivery_form.city.value;*/
+    },
+    saveDeliveryAddress(){
+      event.preventDefault();
+      var uid = this.currentUser.uid;
+
+      var first_name = this.$refs.delivery_form.first_name.value;
+      var last_name = this.$refs.delivery_form.last_name.value;
+      var street = this.$refs.delivery_form.street.value;
+      var number = this.$refs.delivery_form.number.value;
+      var zip = this.$refs.delivery_form.zip.value;
+      var city = this.$refs.delivery_form.city.value;
+
+      var address = {
+        first_name: first_name,
+        last_name: last_name,
+        street: street,
+        number: number,
+        zip: zip,
+        city: city
+      };
+
+      console.log(address);
+
+      this.saveDeliveryAddressRemote({
+        uid: uid,
+        address: address
+      });
+      this.addMessage({
+        messageClass: 'success',
+        message: "Your address has been saved."
+      })
     },
     checkout() {
       if (this.isLoggedIn) {
@@ -160,5 +243,22 @@ export default {
 .list-shopping-cart-leave-to {
   opacity: 0;
   transform: translateX(50px);
+}
+
+#delivery_form > div.row input{
+  margin-bottom: 7px;
+}
+
+#end_buttons{
+  margin-top: 10px;
+}
+
+#checkout_button_wrapper{
+  text-align: right;
+}
+
+#checkout_button_wrapper > button{
+  width:auto;
+  display: inline-block;
 }
 </style>

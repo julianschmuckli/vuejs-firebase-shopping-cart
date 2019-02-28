@@ -57,6 +57,18 @@ export function saveShoppingCart(_, {uid, cartItemList}) {
 	return ref.child("cart/" + uid).set(cartItemList);
 }
 
+export function saveDeliveryAddressRemote(_, {uid, address}){
+  return ref.child("delivery_address/" + uid).set(address)
+}
+
+export function getDeliveryAddress({commit}, {uid}){
+  return ref.child("delivery_address/" + uid).once('value').then((address) => {
+    if(address.val()){
+      commit('SET_ADDRESS', address.val());
+    }
+  });
+}
+
 export function saveToTransaction(_, {uid, cartItemList}) {
 	let newTransactionKey = ref.child("transactions").push().key;
 	var newTransaction = {}
