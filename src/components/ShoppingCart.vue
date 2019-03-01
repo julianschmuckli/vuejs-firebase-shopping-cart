@@ -84,6 +84,14 @@ import CartItem from './cart/CartItem.vue';
 export default {
   computed: {
     ...mapGetters(['cartItemList', 'isLoggedIn', 'products', 'currentUser', 'cartValue', 'deliveryAddress']),
+    isDeliveryAddressSet(){ //Form validation for checkout submit
+        return !(this.deliveryAddress.first_name == undefined &&
+        this.deliveryAddress.last_name == undefined &&
+        this.deliveryAddress.street == undefined &&
+        this.deliveryAddress.number == undefined &&
+        this.deliveryAddress.zip == undefined &&
+        this.deliveryAddress.city == undefined)
+    }
   },
   components: {
     appCartItem: CartItem
@@ -184,8 +192,6 @@ export default {
         city: city
       };
 
-      console.log(address);
-
       if(this.saveDeliveryAddressRemote({
         uid: uid,
         address: address
@@ -203,38 +209,45 @@ export default {
     },
     checkout() {
       if (this.isLoggedIn) {
-        if (!this.cartItemList || this.cartItemList.length == 0) {
-          this.addMessage({
-            messageClass: 'warning',
-            message: 'Your cart is empty!'
-          });
-          return;
-        }
-        let {
-          isValid,
-          message
-        } = this.checkValidCart(this.cartItemList, this.products);
-
-        if (isValid) {
-          this.saveToTransaction({
-            cartItemList: this.cartItemList,
-            uid: this.currentUser.uid
-          }).then(() => {
+        if (this.isDeliveryAddressSet) {
+          if (!this.cartItemList || this.cartItemList.length == 0) {
             this.addMessage({
-              messageClass: 'success',
-              message: 'Your order has been successfully processed!'
+              messageClass: 'warning',
+              message: 'Your cart is empty!'
             });
-            this.saveShoppingCart({
-              cartItemList: [],
+            return;
+          }
+          let {
+            isValid,
+            message
+          } = this.checkValidCart(this.cartItemList, this.products);
+
+          if (isValid) {
+            this.saveToTransaction({
+              cartItemList: this.cartItemList,
               uid: this.currentUser.uid
+            }).then(() => {
+              this.addMessage({
+                messageClass: 'success',
+                message: 'Your order has been successfully processed!'
+              });
+              this.saveShoppingCart({
+                cartItemList: [],
+                uid: this.currentUser.uid
+              });
+              this.clearCart();
+              this.$router.push('/');
             });
-            this.clearCart();
-            this.$router.push('/');
-          });
+          } else {
+            this.addMessage({
+              messageClass: 'danger',
+              message: message
+            });
+          }
         } else {
           this.addMessage({
-            messageClass: 'danger',
-            message: message
+            messageClass: 'warning',
+            message: 'Please set a delivery address'
           });
         }
       } else {
