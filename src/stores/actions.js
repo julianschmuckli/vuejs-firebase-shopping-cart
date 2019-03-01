@@ -62,12 +62,16 @@ export function saveDeliveryAddressRemote(_, {uid, address}){
 }
 
 export function getDeliveryAddressRemote({commit}, {uid}){
-  return ref.child("delivery_address/" + uid).once('value').then((address) => {
-    console.log(address.val())
-    if(address.val()){
-      commit('SET_ADDRESS', {address: address.val()}); //Sending the address to the Vuex store
-    }
-  });
+  if(uid!=null){
+    return ref.child("delivery_address/" + uid).once('value').then((address) => {
+      console.log(address.val())
+      if(address.val()){
+        commit('SET_ADDRESS', {address: address.val()}); //Sending the address to the Vuex store
+      }
+    });
+  }else{
+    return false;
+  }
 }
 
 export function saveToTransaction(_, {uid, cartItemList}) {

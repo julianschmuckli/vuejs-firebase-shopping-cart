@@ -97,6 +97,10 @@ export default {
       this.getDeliveryAddressRemote({uid: uid}); //Getting the delivery address from the user if available
     }
   },
+  created(){ //When page is loading
+    var uid = this.currentUser.uid;
+    this.getDeliveryAddressRemote({uid: uid});
+  },
   methods: {
     ...mapActions(['saveShoppingCart', 'saveDeliveryAddressRemote', 'getDeliveryAddressRemote', 'addMessage', 'saveToTransaction', 'clearCart']),
     checkValidCart(itemList, prodList) {
