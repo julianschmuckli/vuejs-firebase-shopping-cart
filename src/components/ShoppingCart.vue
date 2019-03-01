@@ -57,7 +57,13 @@
       </form>
     </div>
     <div class="col-sm-6">
-
+      <h4>Coupon-Code</h4>
+      <form ref="coupon_form" id="coupon_form" @submit="checkCouponCode">
+        <input type="text" class="form-control" name="code" placeholder="Coupon Code">
+        <div style="width:100%;text-align:right;">
+          <input type="submit" class="btn btn-default" value="check">
+        </div>
+      </form>
     </div>
   </div>
   <div class="row" id="end_buttons">
@@ -207,6 +213,13 @@ export default {
         });
       }
     },
+    checkCouponCode(){
+      event.preventDefault();
+      var code = this.$refs.coupon_form.code.value.trim();
+      if(code == ""){
+        this.checkCouponCodeRemote({});
+      }
+    },
     checkout() {
       if (this.isLoggedIn) {
         if (this.isDeliveryAddressSet) {
@@ -271,7 +284,7 @@ export default {
   transform: translateX(50px);
 }
 
-#delivery_form > div.row input{
+#delivery_form input, #coupon_form input{
   margin-bottom: 7px;
 }
 
