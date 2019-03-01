@@ -1,6 +1,13 @@
-# vuejs-shopping-apps
+# M150
+This fork is for a project for the Module 150 at BBB IT-School in Baden.
 
-> A shopping cart with VueJS
+Following features has been added in this fork:
+* Setting a delivery address
+* Redeem a coupon code
+
+## Demo
+If you want to see a demo, checkout the following link:
+https://bbbaden-m150.firebaseapp.com/
 
 ## Get Started
 
@@ -18,7 +25,8 @@ yarn install
 yarn dev
 ```
 
-You can use data in `data/` folder to import to `products` node in your firebase app.
+## Example data
+In the `data` folder you will find some JSON files, which can be imported in the Realtime Database in Firebase. Just create a node `products` and `coupons` and import the JSON files in there.
 
 ## Features
 
@@ -32,11 +40,6 @@ This project implements basic shopping cart features:
 * VueJS [^2.2.1]
 * Firebase (auth and realtime database)
 
-## Demo
-
-Checkout demo at [Demo](http://vuejs-shopping-cart.coddeine.com/)
-
-![Alt text](/screenshots/screenshot1.png?raw=true "Optional Title")
 ## Contributing
 
 As I use this for my own projects, I know this might not be the perfect approach
