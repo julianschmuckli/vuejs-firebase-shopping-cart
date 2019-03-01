@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 
 import address from './modules/address';
 import cart from './modules/cart';
+import coupon from './modules/coupon';
 import products from './modules/products';
 import auth from './modules/auth';
 import messages from './modules/messages';
@@ -16,6 +17,7 @@ export default new Vuex.Store({
 	modules: {
 		auth,
 		cart,
+		coupon,
 		products,
 		messages,
 		address

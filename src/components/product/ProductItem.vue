@@ -34,6 +34,7 @@ export default {
         quantity: 1,
         isAdd: true
       };
+      console.log(order);
       this.updateCart(order);
     }
   },

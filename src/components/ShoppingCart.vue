@@ -89,7 +89,7 @@ import {
 import CartItem from './cart/CartItem.vue';
 export default {
   computed: {
-    ...mapGetters(['cartItemList', 'isLoggedIn', 'products', 'currentUser', 'cartValue', 'deliveryAddress']),
+    ...mapGetters(['cartItemList', 'isLoggedIn', 'products', 'currentUser', 'cartValue', 'deliveryAddress', 'activeCoupon']),
     isDeliveryAddressSet(){ //Form validation for checkout submit
         return !(this.deliveryAddress.first_name == undefined &&
         this.deliveryAddress.last_name == undefined &&
@@ -106,17 +106,57 @@ export default {
     deliveryAddress(address){ //After address has been loaded from Firebase
       this.setDeliveryAddress(address);
     },
+    activeCoupon(coupon){
+      if(coupon == undefined){
+        this.addMessage({
+          messageClass: 'warning',
+          message: 'Sorry, this coupon code is not valid.'
+        });
+      }else{
+        if(this.cartValue > 0){
+          //Add a simulated product to the cart
+          var item = {
+            price: -coupon.discount_price,
+            title: coupon.name,
+            quantity: 1,
+            description: "Discount",
+            id: coupon.id,
+            thumbnail_url: "https://cdn4.iconfinder.com/data/icons/e-shopping-1/64/scissors-money-discount-commerce-sales-currency-coupon-voucher-shopping-512.png"
+          };
+
+          const order = {
+            item: Object.assign({}, item),
+            quantity: 1,
+            isAdd: false
+          };
+          this.updateCart(order);
+        } else {
+          this.addMessage({
+            messageClass: 'warning',
+            message: 'Please put first something into the cart before redeem a coupon.'
+          });
+        }
+      }
+    },
     currentUser(){ //Waiting until we get information about the user
       var uid = this.currentUser.uid;
       this.getDeliveryAddressRemote({uid: uid}); //Getting the delivery address from the user if available
     }
   },
-  created(){ //When page is loading
+  mounted(){ //When page is loading
     var uid = this.currentUser.uid;
     this.getDeliveryAddressRemote({uid: uid});
   },
   methods: {
-    ...mapActions(['saveShoppingCart', 'saveDeliveryAddressRemote', 'getDeliveryAddressRemote', 'addMessage', 'saveToTransaction', 'clearCart']),
+    ...mapActions([
+      'saveShoppingCart',
+      'saveDeliveryAddressRemote',
+      'getDeliveryAddressRemote',
+      'checkCouponCodeRemote',
+      'addMessage',
+      'updateCart',
+      'saveToTransaction',
+      'clearCart']),
     checkValidCart(itemList, prodList) {
       let isValid = true;
       let message = "";
@@ -216,8 +256,8 @@ export default {
     checkCouponCode(){
       event.preventDefault();
       var code = this.$refs.coupon_form.code.value.trim();
-      if(code == ""){
-        this.checkCouponCodeRemote({});
+      if(code != ""){
+        this.checkCouponCodeRemote({code: code});
       }
     },
     checkout() {

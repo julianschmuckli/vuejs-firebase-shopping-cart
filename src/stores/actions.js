@@ -64,9 +64,22 @@ export function saveDeliveryAddressRemote(_, {uid, address}){
 export function getDeliveryAddressRemote({commit}, {uid}){
   if(uid!=null){
     return ref.child("delivery_address/" + uid).once('value').then((address) => {
-      console.log(address.val())
       if(address.val()){
         commit('SET_ADDRESS', {address: address.val()}); //Sending the address to the Vuex store
+      }
+    });
+  }else{
+    return false;
+  }
+}
+
+export function checkCouponCodeRemote({commit}, {code}){
+  if(code!=null){
+    return ref.child("coupons/" + code).once('value').then((coupon) => {
+      if(coupon.val()){ //If coupon code is valid
+        commit('ACTIVE_COUPON', {coupon: coupon.val()}); //Sending the coupon instance to the Vuex store
+      }else{ //If not
+        commit('ACTIVE_COUPON', {coupon: undefined}); //Send an empty response for frontend
       }
     });
   }else{
