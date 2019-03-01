@@ -11,7 +11,7 @@
       <router-link to="/register" tag="li" v-if="!isLoggedIn"><a>Register</a></router-link>
       <li>
         <router-link to="/cart" class="btn btn-success navbar-btn" tag="button">
-          Checkout <span class="badge">{{ numItems }} ($ {{ cartValue }})</span>
+          Checkout <span class="badge">{{ numItems }} ({{ cartValue }} CHF)</span>
         </router-link>
       </li>
     </ul>

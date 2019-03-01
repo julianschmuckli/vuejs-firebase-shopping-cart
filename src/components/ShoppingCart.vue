@@ -67,12 +67,12 @@
     </div>
   </div>
   <div class="row" id="end_buttons">
-    <div class="col-sm-6">
+    <div class="col-xs-6">
       <button class="btn btn-warning" @click="saveShoppingCartLocal">
         <i class="fa fa-angle-left"></i>Save and Continue Shopping
       </button>
     </div>
-    <div class="col-sm-6" id="checkout_button_wrapper">
+    <div class="col-xs-6" id="checkout_button_wrapper">
       <button class="btn btn-success btn-block" @click="checkout">
         Checkout <i class="fa fa-angle-right"></i>
       </button>
