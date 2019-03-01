@@ -1,7 +1,12 @@
 {
-  "testcode": {
-    "id": "10000",
-    "name": "General discount",
-    "discount_price": 50
+  "testcode" : {
+    "discount_price" : 50,
+    "id" : 10000,
+    "name" : "General discount"
+  },
+  "ultimate" : {
+    "discount_price" : 2000,
+    "id" : 10001,
+    "name" : "Ultimate"
   }
 }
