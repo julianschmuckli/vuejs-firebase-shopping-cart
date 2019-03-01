@@ -11,15 +11,15 @@
 				</div>
 			</div>
 		</td>
-		<td data-th="Price">{{ cartItem.price }}</td>
-		<td data-th="Quantity">
+		<td data-th="Price" class="text-right">{{ cartItem.price }} CHF</td>
+		<td data-th="Quantity" class="text-right">
 			<input type="number" class="form-control text-center" v-if="cartItem.price > 0"
 				:value="cartItem.quantity"
 
 				@input="updateQuantity"
 				min="0">
 		</td>
-		<td data-th="Subtotal" class="text-center">${{ subtotal }}</td>
+		<td data-th="Subtotal" class="text-right">{{ subtotal }} CHF</td>
 		<td class="actions" data-th="">
 			<button class="btn btn-danger btn-sm" @click="removeItem"><i class="fa fa-trash-o"></i></button>
 		</td>
@@ -59,3 +59,9 @@
 		}
 	}
 </script>
+
+<style>
+.text-right{
+	text-align: right;
+}
+</style>

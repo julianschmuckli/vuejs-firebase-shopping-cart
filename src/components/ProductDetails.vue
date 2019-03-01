@@ -7,7 +7,7 @@
     <div v-else class="thumbnail">
       <img class="img-responsive" :src="item.thumbnail_url" alt="">
       <div class="caption-full">
-        <h4 class="pull-right">$ {{ item.price }}</h4>
+        <h4 class="pull-right">{{ item.price }} CHF</h4>
         <h4> {{ item.title }}</h4>
         <p> {{ item.description }} </p>
       </div>

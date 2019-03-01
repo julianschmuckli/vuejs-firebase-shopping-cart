@@ -17,8 +17,8 @@
 
     <tfoot>
       <tr>
-        <td colspan="3" class="hidden-xs"></td>
-        <td class="hidden-xs text-center"><strong>Total ${{ cartValue }}</strong></td>
+        <td colspan="3" class="hidden-xs"><strong>Total</strong></td>
+        <td class="hidden-xs" style="text-align:right;"><strong>{{ cartValue }} CHF</strong></td>
         <td></td>
       </tr>
     </tfoot>

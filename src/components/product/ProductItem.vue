@@ -3,7 +3,7 @@
   <div class="thumbnail ">
     <img :src="item.thumbnail_url" alt="" class="grow thumbnail-image">
     <div class="caption margin-left-sm">
-      <h4 class="pull-right">${{ item.price }}</h4>
+      <h4 class="pull-right">{{ item.price }} CHF</h4>
       <router-link :to="'/product/' + item.id" tag="h4"><a>{{ item.title }}</a></router-link>
       <p class="truncate">{{ item.description | shortDescription}}</p>
     </div>
