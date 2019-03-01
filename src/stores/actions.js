@@ -87,6 +87,11 @@ export function checkCouponCodeRemote({commit}, {code}){
   }
 }
 
+export function submitFeedbackRemote(_, {email, text}) {
+  var feedbacks = ref.child("feedbacks").push();
+  return feedbacks.set({email: email, text: text});
+}
+
 export function saveToTransaction(_, {uid, cartItemList}) {
 	let newTransactionKey = ref.child("transactions").push().key;
 	var newTransaction = {}
