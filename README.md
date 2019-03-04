@@ -4,6 +4,7 @@ This fork is for a project for the Module 150 at BBB IT-School in Baden.
 Following features has been added in this fork:
 * Setting a delivery address
 * Redeem a coupon code
+* Give feedback to the vendor
 
 ## Demo
 If you want to see a demo, checkout the following link:
